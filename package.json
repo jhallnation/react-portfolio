@@ -1,4 +1,4 @@
-npm run start{
+{
   "name": "react-redux-router",
   "version": "1.0.0",
   "description": "Basic skeleton codebase for React/Redux/Router applications.",
@@ -54,6 +54,7 @@ npm run start{
     "file-loader": "^1.1.11",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "moment": "^2.24.0",
     "node-sass": "^4.9.2",
     "postcss-loader": "^2.1.6",
     "react": "16.8.0",
