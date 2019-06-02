@@ -1,7 +1,7 @@
 {
-  "name": "react-redux-router",
+  "name": "jhall-nation-react-portfolio",
   "version": "1.0.0",
-  "description": "Basic skeleton codebase for React/Redux/Router applications.",
+  "description": "Personal portfolio react portfolio for Jason Hall",
   "scripts": {
     "preinstall": "npm set audit false",
     "start": "webpack-dev-server --config webpack/dev.config.js --watch",
@@ -25,7 +25,7 @@
     "sass",
     "css module"
   ],
-  "author": "Your Name Here",
+  "author": "Jason Hall",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bottega-code-school/js-builder/issues"
