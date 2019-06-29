@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import PortfolioItem from './portfolio-item';
 
@@ -9,39 +10,24 @@ export default class PortfolioContainer extends Component {
     this.state = {
       pageTitle: 'JHallNation Portfolio items',
       isLoading: false,
-      items: [
-        {
-          title:'SirsiDynix',
-          description: 'Library Management System',
-          role: 'Software Support Analyst',
-          type: 'Employee',
-          slug: 'sirsidynix'
-         },
-        {
-          title:'Rural Data Centers',
-          description: 'Dev Shop and Data Center',
-          role: 'Front End Developer',
-          type: 'Employee',
-          slug: 'rural-data-centers'
-        },
-        {
-          title:'IrishTacos.com',
-          description: 'Tacos and Smoothies',
-          role: 'Ruby on Rails Web Developer',
-          type: 'Freelance',
-          slug: 'irishtacos'
-        },
-        {
-          title: 'Salution.com',
-          description: 'EHR and eMAR Systems',
-          role: 'Wordpress Web Developer',
-          type: 'Freelance',
-          slug: 'salution'
-        }
-      ]
+      items: []
     }
 
     this.handleFilter = this.handleFilter.bind(this);
+  }
+
+  getPortfolioItems(){
+    axios
+      .get('https://jhall.devcamp.space/portfolio/portfolio_items')
+      .then(response => {
+        console.log(response);
+        this.setState({
+          items: response.data.portfolio_items
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   handleFilter(filter){
@@ -54,10 +40,13 @@ export default class PortfolioContainer extends Component {
 
   portfolioItems() {
     return this.state.items.map(i => {
-      return <PortfolioItem title={i.title} description={i.description} role={i.role} slug={i.slug}/>;
+      return <PortfolioItem title={i.name} description={i.description} role={i.url} slug={i.id}/>;
     });
   }
 
+  componentDidMount(){
+    this.getPortfolioItems();
+  }
   render() {
     if (this.state.isLoading){
       return <div>Loading...</div>;
