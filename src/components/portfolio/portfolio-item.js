@@ -10,11 +10,12 @@ export default function(props) {
     // - position: url
     // ["id", "name", "description", "url", "category", "position", "thumb_image_url", "banner_image_url", "logo_url", "column_names_merged_with_images"]
 
-  const { name, url, id, description, thumb_image_url, logo} = props.item;
+  const { title, subtitle, body, url, id } = props.item;
   return (
     <div>
-      <h2>{name}</h2>
-      <h3>{description}</h3>
+      <h2>{title}</h2>
+      <h3>{subtitle}</h3>
+      <h3>{body}</h3>
       <h3>{url}</h3>
 
       <Link to={`/portfolio/${id}`}>Link</Link>

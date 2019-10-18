@@ -18,11 +18,11 @@ export default class PortfolioContainer extends Component {
 
   getPortfolioItems(){
     axios
-      .get('https://jhall.devcamp.space/portfolio/portfolio_items')
+      .get('http://localhost:3000/api')
       .then(response => {
         console.log(response);
         this.setState({
-          items: response.data.portfolio_items
+          items: response.data
         });
       })
       .catch(error => {
