@@ -33,7 +33,7 @@ export default class PortfolioContainer extends Component {
   handleFilter(filter){
      this.setState({
        items: this.state.items.filter(i => {
-         return i.type === filter;
+         return i.work_type === filter;
        })
      })
   }
