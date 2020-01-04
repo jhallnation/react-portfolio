@@ -1,5 +1,9 @@
 body {
     margin:0px;
     font-family: 'Raleway', sans-serif;
-    background-color: $primarycolor;
+    background-color: $primaryColor;
+}
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
 }

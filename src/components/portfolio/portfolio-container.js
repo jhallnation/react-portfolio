@@ -20,7 +20,6 @@ export default class PortfolioContainer extends Component {
     axios
       .get('http://localhost:3000/api')
       .then(response => {
-        console.log(response);
         this.setState({
           items: response.data
         });
@@ -54,16 +53,12 @@ export default class PortfolioContainer extends Component {
 
     return (
       <div>
-        <br />
-        <h2>{this.state.pageTitle}</h2>
-
-        <br />
         <button onClick={() => this.handleFilter('Employee')}>Employee</button>
         <button onClick={() => this.handleFilter('Freelance')}>Freelance</button>
-        <hr />
-        <br />
 
-        {this.portfolioItems()}
+        <div className='portfolio-items-wrapper'>
+          {this.portfolioItems()}
+        </div>
 
       </div>
     );
