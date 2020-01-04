@@ -30,7 +30,9 @@ export default class NavigationContainer extends Component {
         </div>
 
         <div className='right-side'>
-        JASON HALL
+          <div>
+            JASON HALL
+          </div>
         </div>
         
       </div>

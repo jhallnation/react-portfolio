@@ -1,3 +1,8 @@
+.button-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 .portfolio-items-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -40,6 +45,7 @@
       margin-bottom: 20px;
       color: #ffffff;
       white-space: nowrap;
+      font-size: 1.7rem;
     }
   }
 }
