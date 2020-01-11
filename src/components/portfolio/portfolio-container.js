@@ -18,7 +18,7 @@ export default class PortfolioContainer extends Component {
 
   getPortfolioItems(){
     axios
-      .get('http://localhost:3000/api')
+      .get('http://localhost:3000/api/portfolio')
       .then(response => {
         this.setState({
           items: response.data
