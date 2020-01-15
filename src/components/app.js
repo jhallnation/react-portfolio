@@ -11,6 +11,29 @@ import Auth from './pages/auth';
 import NoMatch from './pages/no-match';
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loggedInStatus: 'NOT_LOGGED_IN'
+    };
+
+    this.handleSuccessfulLogin =this.handleSuccessfulLogin.bind(this);
+    this.handleUnsuccessfulLogin =this.handleUnsuccessfulLogin.bind(this);
+  }
+
+  handleSuccessfulLogin() {
+    this.setState({
+      loggedInStatus: 'LOGGED_IN'
+    })
+  }  
+
+  handleUnsuccessfulLogin() {
+    this.setState({
+      loggedInStatus: 'NOT_LOGGED_IN'
+    })
+  }
+
   render() {
     return (
       <div className='container'>   
@@ -20,9 +43,20 @@ export default class App extends Component {
 
             <NavigationContainer />
 
+            <h2>{this.state.loggedInStatus}</h2>
+
             <Switch>
-              <Route exact path='/' component={ Home } />  
-              <Route path='/auth' component={ Auth } />  
+              <Route exact path='/' component={ Home } /> 
+              <Route 
+                path='/auth' 
+                render={props => (
+                  <Auth
+                    {...props}
+                    handleSuccessfulLogin={this.handleSuccessfulLogin}
+                    handleUnsuccessfulLogin={this.handleUnsuccessfulLogin}
+                   />
+                )} 
+              /> 
               <Route path='/about-me' component={ About } />  
               <Route path='/contact' component={ Contact } />  
               <Route path='/blog' component={ Blog } />  

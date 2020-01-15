@@ -11,8 +11,8 @@ export default class Login extends Component {
       errorText: ''
     }
 
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(event) {
@@ -24,11 +24,12 @@ export default class Login extends Component {
       },
       { withCredentials: true },
     ).then(response => {
-        console.log('You have logged in successfully');
+        this.props.handleSuccessfulAuth();
+        console.log(response);
     }).catch(error => {
       if (error.response.status == 401) {
         this.setState({
-          errorText: 'Incorrect email or password'
+          errorText: 'Incorrect admin email or password'
         });
       } else if (error.response.status == 404) {
         this.setState({
@@ -43,7 +44,7 @@ export default class Login extends Component {
           errorText: 'Sorry, an unexpected error has occurred'
         }); 
       }
-      console.log(error.response.status);
+      this.props.handleUnsuccessfulAuth();
     });
     event.preventDefault();
   }
@@ -58,7 +59,7 @@ export default class Login extends Component {
   render() {
     return (
       <div>
-        <h1>LOGIN TO ACCESS YOUR DASHBOARD</h1>
+        <h1>ADMINISTRATION DASHBOARD LOGIN</h1>
 
         <div>{this.state.errorText}</div>
 
