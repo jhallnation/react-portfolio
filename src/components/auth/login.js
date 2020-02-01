@@ -22,10 +22,12 @@ export default class Login extends Component {
           email: this.state.email,
           password: this.state.password
       },
-      { withCredentials: true },
+      { withCredentials: true }
     ).then(response => {
         this.props.handleSuccessfulAuth();
         console.log(response);
+        localStorage.setItem('token', response.data.authentication_token);
+        localStorage.setItem('userEmail', response.data.email);
     }).catch(error => {
       if (error.response.status == 401) {
         this.setState({

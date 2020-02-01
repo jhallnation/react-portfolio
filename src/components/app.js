@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import axios from 'axios';
 
 import NavigationContainer from './navigation/navigation-container';
 import Home from './pages/home';
@@ -32,6 +33,22 @@ export default class App extends Component {
     this.setState({
       loggedInStatus: 'NOT_LOGGED_IN'
     })
+  }
+
+  checkLoginStatus() {
+    return axios.get(
+      'http://localhost:3000/api/logged_in',
+      { withCredentials: true,
+        headers: { 'Authorization' : localStorage.getItem('token')},
+        params: {email: localStorage.getItem('userEmail')}
+      }
+    ).then(response => {
+      console.log('logged_in response', response );
+    });
+  }
+
+  componentDidMount() {
+    this.checkLoginStatus();
   }
 
   render() {
