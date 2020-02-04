@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 
-import NavigationContainer from './navigation/navigation-container';
+import NavigationComponent from './navigation/navigation-container';
 import Home from './pages/home';
 import About from './pages/about';
 import Contact from './pages/contact';
@@ -39,12 +39,29 @@ export default class App extends Component {
     return axios.get(
       'http://localhost:3000/api/logged_in',
       { withCredentials: true,
-        headers: { 'Authorization' : localStorage.getItem('token')},
-        params: {email: localStorage.getItem('userEmail')}
+        headers: { 
+          'Authorization' : localStorage.getItem('token'),
+          'jhUserEmail' : localStorage.getItem('userEmail')
+        }
       }
     ).then(response => {
-      console.log('logged_in response', response );
-    });
+      const loggedIn = response.data.logged_in;
+      const loggedInStatus = this.state.loggedInStatus;
+
+      if (loggedIn && loggedInStatus === 'LOGGED_IN') {
+        return loggedIn;
+      } else if (loggedIn && loggedInStatus === 'NOT_LOGGED_IN') {
+        this.setState({
+          loggedInStatus: 'LOGGED_IN'
+        });
+      } else if (!loggedIn && loggedInStatus === 'LOGGED_IN') {
+          this.setState({
+            loggedInStatus: 'NOT_LOGGED_IN'
+        });
+      }
+    }).catch(error =>{
+      console.log('Error', error);
+    })
   }
 
   componentDidMount() {
@@ -58,7 +75,7 @@ export default class App extends Component {
         <Router>
           <div>
 
-            <NavigationContainer />
+            <NavigationComponent />
 
             <h2>{this.state.loggedInStatus}</h2>
 
