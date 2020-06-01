@@ -21,6 +21,7 @@ export default class App extends Component {
 
     this.handleSuccessfulLogin =this.handleSuccessfulLogin.bind(this);
     this.handleUnsuccessfulLogin =this.handleUnsuccessfulLogin.bind(this);
+    this.handleSuccessfulLogout =this.handleSuccessfulLogout.bind(this);
   }
 
   handleSuccessfulLogin() {
@@ -35,10 +36,16 @@ export default class App extends Component {
     })
   }
 
+  handleSuccessfulLogout() {
+    this.setState({
+      loggedInStatus: 'NOT_LOGGED_IN'
+    })
+  }
+
   checkLoginStatus() {
     return axios.get(
       'http://localhost:3000/api/logged_in',
-      { withCredentials: true,
+      { 
         headers: { 
           'Authorization' : localStorage.getItem('token'),
           'jhUserEmail' : localStorage.getItem('userEmail')
@@ -61,7 +68,7 @@ export default class App extends Component {
       }
     }).catch(error =>{
       console.log('Error', error);
-    })
+    });
   }
 
   componentDidMount() {
@@ -81,7 +88,10 @@ export default class App extends Component {
         <Router>
           <div>
 
-            <NavigationComponent loggedInStatus={this.state.loggedInStatus} />
+            <NavigationComponent 
+              loggedInStatus={this.state.loggedInStatus}
+              handleSuccessfulLogout={this.handleSuccessfulLogout}
+            />
 
             <h2>{this.state.loggedInStatus}</h2>
 

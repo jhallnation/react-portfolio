@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from 'axios';
+import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
 
 const NavigationComponent = (props => {
@@ -11,6 +13,27 @@ const NavigationComponent = (props => {
     );
   };
 
+  const handleLogout = () => {
+    axios.delete(
+      'http://localhost:3000/api/logout',
+      {
+       headers: { 
+          'jhUserEmail' : localStorage.getItem('userEmail')
+        }
+      }
+    ).then(response =>{
+      if (response.status === 200) {
+        localStorage.setItem('token', '');
+        localStorage.setItem('userEmail', '');
+        props.history.push('/');
+        props.handleSuccessfulLogout();
+      }
+      return response.data;
+    }).catch(error => {
+      console.log('Error on logout', error);
+    });
+  };
+
   return(
     <div className='nav-wrapper'>
       <div className='left-side'>
@@ -18,7 +41,7 @@ const NavigationComponent = (props => {
         {dynamicLink('/', 'Home')}
 
         {dynamicLink('/about-me', 'About Me')}
-        
+
         {dynamicLink('/contact', 'Contact')}
 
         {props.loggedInStatus === 'LOGGED_IN' ? dynamicLink('/blog', 'Blog') : null}
@@ -28,6 +51,7 @@ const NavigationComponent = (props => {
       <div className='right-side'>
         <div>
           JASON HALL
+          {props.loggedInStatus === 'LOGGED_IN' ? (<a onClick={handleLogout}>Logout</a>) : null}
         </div>
       </div>
       
@@ -36,4 +60,4 @@ const NavigationComponent = (props => {
   }
 )
 
-export default NavigationComponent;
+export default withRouter(NavigationComponent);
