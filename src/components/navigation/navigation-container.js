@@ -44,7 +44,9 @@ const NavigationComponent = (props => {
 
         {dynamicLink('/contact', 'Contact')}
 
-        {props.loggedInStatus === 'LOGGED_IN' ? dynamicLink('/blog', 'Blog') : null}
+        {dynamicLink('/blog', 'Blog')}
+
+        {props.loggedInStatus === 'LOGGED_IN' ? dynamicLink('/portfolio-manager', 'Portfolio Manager') : null}
 
       </div>
 
