@@ -21,10 +21,33 @@ export default class PortfolioForm extends Component {
     }
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit =this.handleSubmit.bind(this);
+  }
+
+  buildForm() {
+    let formData = new FormData();
+
+    formData.append('portfolios[title]', this.state.title);
+    formData.append('portfolios[subtitle]', this.state.subtitle);
+    formData.append('portfolios[body]', this.state.body);
+    formData.append('portfolios[work_type]', this.state.work_type);
+    // formData.append('portfolios[main_image]', this.state.main_image);
+    // formData.append('portfolios[thumb_image]', this.state.thumb_image);
+    // formData.append('portfolios[logo]', this.state.logo);
+    // formData.append('portfolios[url]', this.state.url);
+
+    return formData;
   }
 
   handleChange(event) {
-    //TODO
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  handleSubmit(event) {
+    console.log(this.state)
+    event.preventDefault();
   }
 
 
@@ -32,8 +55,7 @@ export default class PortfolioForm extends Component {
     return (
       <div>
         <h1>Create New Portfolio</h1>
-
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <div>
             <input 
               type='text'
