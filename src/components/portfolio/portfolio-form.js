@@ -9,7 +9,7 @@ export default class PortfolioForm extends Component {
       title: '',
       subtitle: '',
       body: '',
-      work_type: '',
+      work_type: 'Home Project',
       main_image: '',
       thumb_image: '',
 
@@ -56,7 +56,11 @@ export default class PortfolioForm extends Component {
         }
       }
      ).then(response => {
-       console.log("response",response);
+       if (response.data.new_portfolio == false) {
+         console.error('Unable to create portfolio');
+       } else {
+         this.props.getPortfolioItems()
+       }
      }).catch(error =>{
        console.log("portfolio form handle submit error", error);
      });
@@ -77,6 +81,7 @@ export default class PortfolioForm extends Component {
               placeholder='Title'
               value={this.state.title}
               onChange={this.handleChange}
+              required
             />
             <input 
               type='text'
@@ -94,21 +99,24 @@ export default class PortfolioForm extends Component {
               value={this.state.subtitle}
               onChange={this.handleChange}
             />
-            <input 
-              type='text'
+            <select 
               name='work_type'
-              placeholder='Employment Type'
               value={this.state.work_type}
               onChange={this.handleChange}
-            />
+            >
+              <option value='Home Project'>Home Project</option>
+              <option value='Employee'>Employee</option>
+              <option value='Freelance'>Freelance</option>
+            </select>
           </div>
           <div>
-            <input 
+            <textarea 
               type='text'
               name='body'
               placeholder='Body'
               value={this.state.body}
               onChange={this.handleChange}
+              required
             />
           </div>
 {/*          <div>

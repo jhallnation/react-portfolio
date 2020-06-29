@@ -12,18 +12,12 @@ export default class PortfolioManager extends Component {
       items: []
     }
 
-    this.handleSuccessfulFormSubmission = this.handleSuccessfulFormSubmission.bind(this);
+    this.getPortfolioItems = this.getPortfolioItems.bind(this);
     this.handleUnsuccessfulFormSubmission = this.handleUnsuccessfulFormSubmission.bind(this);
   }
 
-  handleSuccessfulFormSubmission(portfolioItem) {
-    //TODO
-    //update items state
-    //add portfolioItem to items state list
-  }
-
   handleUnsuccessfulFormSubmission(error) {
-    console.log('handleUnsuccessfulFormSubmission', error);
+    console.error('handleUnsuccessfulFormSubmission', error);
   }
 
   getPortfolioItems(){
@@ -35,7 +29,7 @@ export default class PortfolioManager extends Component {
         });
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
   }
 
@@ -54,7 +48,7 @@ export default class PortfolioManager extends Component {
       <div className='portfolio-manager-wrapper'>
         <div className='left-column'>
           <PortfolioForm 
-            handleSuccessfulFormSubmission ={this.handleSuccessfulFormSubmission}
+            getPortfolioItems ={this.getPortfolioItems}
             handleUnsuccessfulFormSubmission ={this.handleUnsuccessfulFormSubmission}
           />
         </div>
