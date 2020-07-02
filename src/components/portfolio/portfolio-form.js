@@ -16,13 +16,8 @@ export default class PortfolioForm extends Component {
       work_type: 'Home Project',
       main_image: '',
       thumb_image: '',
-
-      //TODO
-      //need to be added to schema
       logo: '',
       url: '',
-
-
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -30,12 +25,34 @@ export default class PortfolioForm extends Component {
     this.componenetConfig = this.componenetConfig.bind(this);
     this.djsConfig = this.djsConfig.bind(this);
     this.handleThumbDrop = this.handleThumbDrop.bind(this);
+    this.handleMainImageDrop = this.handleMainImageDrop.bind(this);
+    this.handleLogoDrop = this.handleLogoDrop.bind(this);
+
+    this.thumbRef = React.createRef();
+    this.mainImageRef = React.createRef();
+    this.logoRef = React.createRef();
   }
 
   handleThumbDrop() {
     return {
       addedfile: file => this.setState({
         thumb_image: file
+      })
+    };
+  }
+
+  handleMainImageDrop() {
+    return {
+      addedfile: file => this.setState({
+        main_image: file
+      })
+    };
+  }
+
+   handleLogoDrop() {
+    return {
+      addedfile: file => this.setState({
+        logo: file
       })
     };
   }
@@ -62,13 +79,17 @@ export default class PortfolioForm extends Component {
     formData.append('portfolios[subtitle]', this.state.subtitle);
     formData.append('portfolios[body]', this.state.body);
     formData.append('portfolios[work_type]', this.state.work_type);
+    formData.append('portfolios[url]', this.state.url);
+
     if (this.state.thumb_image) {
       formData.append('portfolios[thumb_image]', this.state.thumb_image);
     }
-
-    // formData.append('portfolios[main_image]', this.state.main_image);
-    // formData.append('portfolios[logo]', this.state.logo);
-    // formData.append('portfolios[url]', this.state.url);
+    if (this.state.main_image) {
+      formData.append('portfolios[main_image]', this.state.main_image);
+    }
+    if (this.state.logo) {
+      formData.append('portfolios[logo]', this.state.logo);
+    }
 
     return formData;
   }
@@ -92,7 +113,23 @@ export default class PortfolioForm extends Component {
        if (response.data.new_portfolio == false) {
          console.error('Unable to create portfolio');
        } else {
-         this.props.getPortfolioItems()
+         this.props.getPortfolioItems();
+
+         this.setState({
+            title: '',
+            subtitle: '',
+            body: '',
+            work_type: 'Home Project',
+            main_image: '',
+            thumb_image: '',
+            logo: '',
+            url: '',
+          });
+
+         [this.thumbRef,this.mainImageRef,this.logoRef].forEach(ref => {
+           ref.current.dropzone.removeAllFiles();
+         });
+
        }
      }).catch(error =>{
        console.log("portfolio form handle submit error", error);
@@ -154,34 +191,26 @@ export default class PortfolioForm extends Component {
           </div>
         <div className='image-uploaders'>
           <DropzoneComponent
+            ref={this.thumbRef}
             config={this.componenetConfig()}
             djsConfig={this.djsConfig()}
             eventHandlers={this.handleThumbDrop()}
            >
            </DropzoneComponent>
-{/*
-          <input 
-            type='text'
-            name='main_image'
-            placeholder='Main Image'
-            value={this.state.main_image}
-            onChange={this.handleChange}
-          />
-          <input 
-            type='text'
-            name='thumb_image'
-            placeholder='Thumb Image'
-            value={this.state.thumb_image}
-            onChange={this.handleChange}
-          />
-          <input 
-            type='text'
-            name='logo'
-            placeholder='Logo'
-            value={this.state.logo}
-            onChange={this.handleChange}
-          />
-*/}
+           <DropzoneComponent
+            ref={this.mainImageRef}
+            config={this.componenetConfig()}
+            djsConfig={this.djsConfig()}
+            eventHandlers={this.handleMainImageDrop()}
+           >
+           </DropzoneComponent>
+           <DropzoneComponent
+            ref={this.logoRef}
+            config={this.componenetConfig()}
+            djsConfig={this.djsConfig()}
+            eventHandlers={this.handleLogoDrop()}
+           >
+           </DropzoneComponent>
         </div>
         <div>
           <button typte='submit'>Save</button>
