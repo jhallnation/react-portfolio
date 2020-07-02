@@ -27,16 +27,16 @@
       color: $secondaryColor;
       text-decoration: none;
       &:hover {
-        color: $secodnaryColorDark;
-        border-bottom: 1px solid $secodnaryColorDark;
+        color: $secondaryColorDark;
+        border-bottom: 1px solid $secondaryColorDark;
       }
     }
 
 
 
     .nav-link-active {
-      color: $secodnaryColorDark;
-      border-bottom: 1px solid $secodnaryColorDark;
+      color: $secondaryColorDark;
+      border-bottom: 1px solid $secondaryColorDark;
     }
   }
 }

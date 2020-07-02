@@ -141,82 +141,80 @@ export default class PortfolioForm extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Create New Portfolio</h1>
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            <input 
-              type='text'
-              name='title'
-              placeholder='Title'
-              value={this.state.title}
-              onChange={this.handleChange}
-              required
-            />
-            <input 
-              type='text'
-              name='url'
-              placeholder='URL'
-              value={this.state.url}
-              onChange={this.handleChange}
-            />
-          </div>
-          <div>
-            <input 
-              type='text'
-              name='subtitle'
-              placeholder='Subttile'
-              value={this.state.subtitle}
-              onChange={this.handleChange}
-            />
-            <select 
-              name='work_type'
-              value={this.state.work_type}
-              onChange={this.handleChange}
-            >
-              <option value='Home Project'>Home Project</option>
-              <option value='Employee'>Employee</option>
-              <option value='Freelance'>Freelance</option>
-            </select>
-          </div>
-          <div>
-            <textarea 
-              type='text'
-              name='body'
-              placeholder='Body'
-              value={this.state.body}
-              onChange={this.handleChange}
-              required
-            />
-          </div>
-        <div className='image-uploaders'>
-          <DropzoneComponent
-            ref={this.thumbRef}
-            config={this.componenetConfig()}
-            djsConfig={this.djsConfig()}
-            eventHandlers={this.handleThumbDrop()}
-           >
-           </DropzoneComponent>
-           <DropzoneComponent
-            ref={this.mainImageRef}
-            config={this.componenetConfig()}
-            djsConfig={this.djsConfig()}
-            eventHandlers={this.handleMainImageDrop()}
-           >
-           </DropzoneComponent>
-           <DropzoneComponent
-            ref={this.logoRef}
-            config={this.componenetConfig()}
-            djsConfig={this.djsConfig()}
-            eventHandlers={this.handleLogoDrop()}
-           >
-           </DropzoneComponent>
+      <form onSubmit={this.handleSubmit} className='portfolio-form-wrapper'>
+        <div>
+          <input 
+            type='text'
+            name='title'
+            placeholder='Title'
+            value={this.state.title}
+            onChange={this.handleChange}
+            required
+          />
+          <input 
+            type='text'
+            name='url'
+            placeholder='URL'
+            value={this.state.url}
+            onChange={this.handleChange}
+          />
         </div>
         <div>
-          <button typte='submit'>Save</button>
+          <input 
+            type='text'
+            name='subtitle'
+            placeholder='Subttile'
+            value={this.state.subtitle}
+            onChange={this.handleChange}
+          />
+          <select 
+            name='work_type'
+            value={this.state.work_type}
+            onChange={this.handleChange}
+            className='select-element'
+          >
+            <option value='Home Project'>Home Project</option>
+            <option value='Employee'>Employee</option>
+            <option value='Freelance'>Freelance</option>
+          </select>
         </div>
-        </form>
-      </div>  
+        <div>
+          <textarea 
+            type='text'
+            name='body'
+            placeholder='Body'
+            value={this.state.body}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
+      <div className='image-uploaders'>
+        <DropzoneComponent
+          ref={this.thumbRef}
+          config={this.componenetConfig()}
+          djsConfig={this.djsConfig()}
+          eventHandlers={this.handleThumbDrop()}
+         >
+         </DropzoneComponent>
+         <DropzoneComponent
+          ref={this.mainImageRef}
+          config={this.componenetConfig()}
+          djsConfig={this.djsConfig()}
+          eventHandlers={this.handleMainImageDrop()}
+         >
+         </DropzoneComponent>
+         <DropzoneComponent
+          ref={this.logoRef}
+          config={this.componenetConfig()}
+          djsConfig={this.djsConfig()}
+          eventHandlers={this.handleLogoDrop()}
+         >
+         </DropzoneComponent>
+      </div>
+      <div>
+        <button typte='submit'>Save</button>
+      </div>
+      </form>
     );
   }
 }

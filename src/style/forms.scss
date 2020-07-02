@@ -1,0 +1,24 @@
+textarea {
+  border: 1px solid $secondaryColor;
+  background-color: transparent;
+  font-size: 1rem;
+  width:100%;
+  height:100px;
+  outline:none;
+  padding:10px;
+  margin-bottom: 10px;
+  color:$charcoal;
+  border-radius: 3px;
+}
+
+.select-element {
+  color: #ffffff;
+  border: 1px solid $secondaryColor;
+  width:100%;
+  font-size: 0.8rem;
+  border-radius: 3px;
+  overflow: hidden;
+  background-color: transparent;
+  outline: none;
+  margin-bottom:10px;
+}
