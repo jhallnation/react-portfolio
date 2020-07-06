@@ -142,7 +142,7 @@ export default class PortfolioForm extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit} className='portfolio-form-wrapper'>
-        <div>
+        <div className='two-column'>
           <input 
             type='text'
             name='title'
@@ -159,7 +159,7 @@ export default class PortfolioForm extends Component {
             onChange={this.handleChange}
           />
         </div>
-        <div>
+        <div className='two-column'>
           <input 
             type='text'
             name='subtitle'
@@ -178,7 +178,7 @@ export default class PortfolioForm extends Component {
             <option value='Freelance'>Freelance</option>
           </select>
         </div>
-        <div>
+        <div className='one-column'>
           <textarea 
             type='text'
             name='body'
@@ -188,13 +188,14 @@ export default class PortfolioForm extends Component {
             required
           />
         </div>
-      <div className='image-uploaders'>
+      <div className='image-uploaders three-column'>
         <DropzoneComponent
           ref={this.thumbRef}
           config={this.componenetConfig()}
           djsConfig={this.djsConfig()}
           eventHandlers={this.handleThumbDrop()}
          >
+           <div className='dz-message'>Thumbnail</div>
          </DropzoneComponent>
          <DropzoneComponent
           ref={this.mainImageRef}
@@ -202,6 +203,7 @@ export default class PortfolioForm extends Component {
           djsConfig={this.djsConfig()}
           eventHandlers={this.handleMainImageDrop()}
          >
+           <div className='dz-message'>Main Image</div>
          </DropzoneComponent>
          <DropzoneComponent
           ref={this.logoRef}
@@ -209,10 +211,11 @@ export default class PortfolioForm extends Component {
           djsConfig={this.djsConfig()}
           eventHandlers={this.handleLogoDrop()}
          >
+           <div className='dz-message'>Logo</div>
          </DropzoneComponent>
       </div>
       <div>
-        <button typte='submit'>Save</button>
+        <button className='btn' type='submit'>Save</button>
       </div>
       </form>
     );
