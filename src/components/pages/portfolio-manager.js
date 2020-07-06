@@ -14,6 +14,7 @@ export default class PortfolioManager extends Component {
 
     this.getPortfolioItems = this.getPortfolioItems.bind(this);
     this.handleUnsuccessfulFormSubmission = this.handleUnsuccessfulFormSubmission.bind(this);
+    this.handleDeleteItem = this.handleDeleteItem.bind(this)
   }
 
   handleUnsuccessfulFormSubmission(error) {
@@ -33,9 +34,31 @@ export default class PortfolioManager extends Component {
       });
   }
 
+  handleDeleteItem(id){
+    axios
+      .delete('http://localhost:3000/api/portfolio/delete',
+        { 
+          headers: { 
+            'Authorization' : localStorage.getItem('token'),
+            'jhUserEmail' : localStorage.getItem('userEmail'),
+            'portfolioItemID' : id
+          }
+        }
+      ).then(response => {
+        if (response.data.delete_portfolio == false) {
+         console.error('Unable to delete portfolio item');
+       } else {
+         this.getPortfolioItems();
+       }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
   portfolioItems() {
     return this.state.items.map(item => {
-      return <PortfolioManagerSidebarItems key={item.id} item={item}/>;
+      return <PortfolioManagerSidebarItems key={item.id} item={item} handleDeleteItem={this.handleDeleteItem}/>;
     });
   }
 

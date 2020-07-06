@@ -8,6 +8,9 @@ const PortfolioManagerSidebarItems = props => {
         <img src={thumb_image.url} />
       </div>
       <h5 className='title'>{title}</h5>
+      <a onClick={() => props.handleDeleteItem(id)}>
+        Delete
+      </a>
     </div>
   )
 

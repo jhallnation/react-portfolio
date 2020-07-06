@@ -111,7 +111,7 @@ export default class PortfolioForm extends Component {
       }
      ).then(response => {
        if (response.data.new_portfolio == false) {
-         console.error('Unable to create portfolio');
+         console.error('Unable to create portfolio item');
        } else {
          this.props.getPortfolioItems();
 
