@@ -26,7 +26,7 @@
     border-top: 0px;
     border-right: 0px;
     border-left: 0px;
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 1px solid $offwhite;
     background-color: transparent;
     transition: 0.5s all ease-in-out;
     font-size: 1.1em;
@@ -38,7 +38,7 @@
     }
   }
       ::placeholder {
-      color: #ffffff;
+      color: $offwhite;
     }
 }
 

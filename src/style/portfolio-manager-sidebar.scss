@@ -6,8 +6,26 @@
       width: 100%;
     }
 
-    .title {
-      color: $primaryColor;
+    .side-bar-text-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .title {
+        color: $primaryColor;
+        font-size: 1.5em;
+      }
+
+      .delete-icon {
+        color: $offwhite;
+        cursor: pointer;
+        transition: 0.5s ease-in-out;
+        &:hover {
+          color: $warning;
+        }
+      }
+
     }
+
   }
 }
