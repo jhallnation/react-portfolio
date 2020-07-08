@@ -9,12 +9,15 @@ export default class PortfolioManager extends Component {
     super()
 
     this.state = {
-      items: []
-    }
+      items: [],
+      itemToEdit: {}
+    };
 
     this.getPortfolioItems = this.getPortfolioItems.bind(this);
     this.handleUnsuccessfulFormSubmission = this.handleUnsuccessfulFormSubmission.bind(this);
-    this.handleDeleteItem = this.handleDeleteItem.bind(this)
+    this.handleDeleteItem = this.handleDeleteItem.bind(this);
+    this.handleEditItem = this.handleEditItem.bind(this);
+    this.clearItemToEdit = this.clearItemToEdit.bind(this);
   }
 
   handleUnsuccessfulFormSubmission(error) {
@@ -32,6 +35,18 @@ export default class PortfolioManager extends Component {
       .catch(error => {
         console.error(error);
       });
+  }
+
+  handleEditItem(item) {
+    this.setState({
+      itemToEdit: item
+    });
+  }
+
+  clearItemToEdit() {
+    this.setState({
+      itemToEdit: {}
+    });    
   }
 
   handleDeleteItem(id){
@@ -58,7 +73,12 @@ export default class PortfolioManager extends Component {
 
   portfolioItems() {
     return this.state.items.map(item => {
-      return <PortfolioManagerSidebarItems key={item.id} item={item} handleDeleteItem={this.handleDeleteItem}/>;
+      return <PortfolioManagerSidebarItems 
+                key={item.id} 
+                item={item} 
+                handleDeleteItem={this.handleDeleteItem}
+                handleEditItem={this.handleEditItem}
+              />;
     });
   }
 
@@ -73,6 +93,8 @@ export default class PortfolioManager extends Component {
           <PortfolioForm 
             getPortfolioItems ={this.getPortfolioItems}
             handleUnsuccessfulFormSubmission ={this.handleUnsuccessfulFormSubmission}
+            clearItemToEdit={this.clearItemToEdit}
+            itemToEdit={this.state.itemToEdit}
           />
         </div>
         <div className='right-column'>

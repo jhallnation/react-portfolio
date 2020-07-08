@@ -22,7 +22,7 @@ export default class PortfolioForm extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.componenetConfig = this.componenetConfig.bind(this);
+    this.componentConfig = this.componentConfig.bind(this);
     this.djsConfig = this.djsConfig.bind(this);
     this.handleThumbDrop = this.handleThumbDrop.bind(this);
     this.handleMainImageDrop = this.handleMainImageDrop.bind(this);
@@ -31,6 +31,28 @@ export default class PortfolioForm extends Component {
     this.thumbRef = React.createRef();
     this.mainImageRef = React.createRef();
     this.logoRef = React.createRef();
+  }
+
+  componentDidUpdate() {
+    if (Object.keys(this.props.itemToEdit).length > 0) {
+      const { title, subtitle, body, url, work_type, thumb_image, main_image, logo, id } = this.props.itemToEdit;
+
+      this.props.clearItemToEdit();
+
+      this.setState({
+        id: id,
+        title: title || '',
+        subtitle: subtitle || '',
+        body: body || '',
+        url: url || '',
+        work_type: work_type || '',
+
+        // thumb_image: thumb_image || '',
+        // main_image: main_image || '',
+        // logo: logo || '',
+
+      });
+    };
   }
 
   handleThumbDrop() {
@@ -57,7 +79,7 @@ export default class PortfolioForm extends Component {
     };
   }
 
-  componenetConfig() {
+  componentConfig() {
     return {
       iconFiletypes: ['.jpg','.png'],
       showFiletypeIcon: true,
@@ -191,7 +213,7 @@ export default class PortfolioForm extends Component {
       <div className='image-uploaders three-column'>
         <DropzoneComponent
           ref={this.thumbRef}
-          config={this.componenetConfig()}
+          config={this.componentConfig()}
           djsConfig={this.djsConfig()}
           eventHandlers={this.handleThumbDrop()}
          >
@@ -199,7 +221,7 @@ export default class PortfolioForm extends Component {
          </DropzoneComponent>
          <DropzoneComponent
           ref={this.mainImageRef}
-          config={this.componenetConfig()}
+          config={this.componentConfig()}
           djsConfig={this.djsConfig()}
           eventHandlers={this.handleMainImageDrop()}
          >
@@ -207,7 +229,7 @@ export default class PortfolioForm extends Component {
          </DropzoneComponent>
          <DropzoneComponent
           ref={this.logoRef}
-          config={this.componenetConfig()}
+          config={this.componentConfig()}
           djsConfig={this.djsConfig()}
           eventHandlers={this.handleLogoDrop()}
          >

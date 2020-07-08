@@ -11,7 +11,18 @@
     display: flex;
 
     div {
-      margin: 20px; 
+      margin: 20px;
+      color:$secondaryColor; 
+
+      a {
+        margin-left: 15px;      
+        cursor: pointer;
+        transition: 0.5s ease-in-out;
+
+        &:hover {
+          color:$secondaryColorDark;
+        }
+      }
     }
   }
 
