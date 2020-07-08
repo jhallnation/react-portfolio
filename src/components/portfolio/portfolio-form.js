@@ -18,6 +18,10 @@ export default class PortfolioForm extends Component {
       thumb_image: '',
       logo: '',
       url: '',
+
+      editMode: false,
+      apiURL: 'http://localhost:3000/api/portfolio/new',
+      apiAction: 'post'
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -50,6 +54,10 @@ export default class PortfolioForm extends Component {
         // thumb_image: thumb_image || '',
         // main_image: main_image || '',
         // logo: logo || '',
+
+        editMode: true,
+        apiURL: 'http://localhost:3000/api/portfolio/edit',
+        apiAction: 'patch'
 
       });
     };
@@ -123,15 +131,26 @@ export default class PortfolioForm extends Component {
   }
 
   handleSubmit(event) {
-    axios.post('http://localhost:3000/api/portfolio/new',
-      this.buildForm(),
-      { 
-        headers: { 
-          'Authorization' : localStorage.getItem('token'),
-          'jhUserEmail' : localStorage.getItem('userEmail')
-        }
-      }
-     ).then(response => {
+    if (this.state.editMode) {
+      requestHeaders = { 
+        'Authorization' : localStorage.getItem('token'),
+        'jhUserEmail' : localStorage.getItem('userEmail'),
+        'portfolioItemID' : id
+      };
+    } else {
+      requestHeaders = { 
+        'Authorization' : localStorage.getItem('token'),
+        'jhUserEmail' : localStorage.getItem('userEmail'),
+      };
+    };
+
+    axios({
+      methond: this.state.apiAction,
+      url: this.state.apiURL,
+      data: this.buildForm(),
+      headers: requestHeaders
+    })
+    .then(response => {
        if (response.data.new_portfolio == false) {
          console.error('Unable to create portfolio item');
        } else {
