@@ -19,9 +19,7 @@ export default class PortfolioForm extends Component {
       logo: '',
       url: '',
 
-      editMode: false,
-      apiURL: 'http://localhost:3000/api/portfolio/new',
-      apiAction: 'post'
+      editMode: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -31,6 +29,8 @@ export default class PortfolioForm extends Component {
     this.handleThumbDrop = this.handleThumbDrop.bind(this);
     this.handleMainImageDrop = this.handleMainImageDrop.bind(this);
     this.handleLogoDrop = this.handleLogoDrop.bind(this);
+    this.createPortfolioItem = this.createPortfolioItem.bind(this);
+    this.editPortfolioItem = this.editPortfolioItem.bind(this);
 
     this.thumbRef = React.createRef();
     this.mainImageRef = React.createRef();
@@ -55,10 +55,7 @@ export default class PortfolioForm extends Component {
         // main_image: main_image || '',
         // logo: logo || '',
 
-        editMode: true,
-        apiURL: 'http://localhost:3000/api/portfolio/edit',
-        apiAction: 'patch'
-
+        editMode: true
       });
     };
   }
@@ -130,27 +127,16 @@ export default class PortfolioForm extends Component {
     });
   }
 
-  handleSubmit(event) {
-    if (this.state.editMode) {
-      requestHeaders = { 
-        'Authorization' : localStorage.getItem('token'),
-        'jhUserEmail' : localStorage.getItem('userEmail'),
-        'portfolioItemID' : id
-      };
-    } else {
-      requestHeaders = { 
-        'Authorization' : localStorage.getItem('token'),
-        'jhUserEmail' : localStorage.getItem('userEmail'),
-      };
-    };
-
-    axios({
-      methond: this.state.apiAction,
-      url: this.state.apiURL,
-      data: this.buildForm(),
-      headers: requestHeaders
-    })
-    .then(response => {
+  createPortfolioItem(event) {
+    axios.post('http://localhost:3000/api/portfolio/new',
+      this.buildForm(),
+      { 
+        headers: { 
+          'Authorization' : localStorage.getItem('token'),
+          'jhUserEmail' : localStorage.getItem('userEmail')
+        }
+      }
+     ).then(response => {
        if (response.data.new_portfolio == false) {
          console.error('Unable to create portfolio item');
        } else {
@@ -164,7 +150,7 @@ export default class PortfolioForm extends Component {
             main_image: '',
             thumb_image: '',
             logo: '',
-            url: '',
+            url: ''
           });
 
          [this.thumbRef,this.mainImageRef,this.logoRef].forEach(ref => {
@@ -177,6 +163,55 @@ export default class PortfolioForm extends Component {
      });
 
     event.preventDefault();
+  }
+
+  editPortfolioItem(event) {
+    axios.patch('http://localhost:3000/api/portfolio/edit',
+      this.buildForm(),
+      { 
+        headers: { 
+          'Authorization' : localStorage.getItem('token'),
+          'jhUserEmail' : localStorage.getItem('userEmail'),
+          'portfolioItemID' : this.state.id
+        }
+      }
+     ).then(response => {
+       if (response.data.new_portfolio == false) {
+         console.error('Unable to edit portfolio item');
+       } else {
+         this.props.getPortfolioItems();
+
+         this.setState({
+            title: '',
+            subtitle: '',
+            body: '',
+            work_type: 'Home Project',
+            main_image: '',
+            thumb_image: '',
+            logo: '',
+            url: '',
+
+            editMode: false
+          });
+
+         [this.thumbRef,this.mainImageRef,this.logoRef].forEach(ref => {
+           ref.current.dropzone.removeAllFiles();
+         });
+
+       }
+     }).catch(error =>{
+       console.error("portfolio form handle submit error", error);
+     });
+
+    event.preventDefault();
+  }
+
+  handleSubmit(event) {
+    if (this.state.editMode) {
+      this.editPortfolioItem(event);
+    } else {
+      this.createPortfolioItem(event);
+    }
   }
 
 
