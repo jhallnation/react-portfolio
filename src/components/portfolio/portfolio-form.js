@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+
+import PortfolioFormImages from './portfolio-form-images';
 import DropzoneComponent from 'react-dropzone-component';
 
 import '../../../node_modules/react-dropzone-component/styles/filepicker.css';
@@ -21,24 +23,32 @@ export default class PortfolioForm extends Component {
 
       apiURL: 'http://localhost:3000/api/portfolio/new',
       apiAction: 'post',
+      editMode: false,
 
       requestHeaders: { 
         'Authorization' : localStorage.getItem('token'),
         'jhUserEmail' : localStorage.getItem('userEmail'),
-      }
+      },
+
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.componentConfig = this.componentConfig.bind(this);
-    this.djsConfig = this.djsConfig.bind(this);
+
     this.handleThumbDrop = this.handleThumbDrop.bind(this);
     this.handleMainImageDrop = this.handleMainImageDrop.bind(this);
     this.handleLogoDrop = this.handleLogoDrop.bind(this);
 
+    this.deleteImage = this.deleteImage.bind(this);
+
     this.thumbRef = React.createRef();
     this.mainImageRef = React.createRef();
     this.logoRef = React.createRef();
+  }
+
+  deleteImage(imageType) {
+    console.log('image removed');
+    console.log(imageType);
   }
 
   componentDidUpdate() {
@@ -54,12 +64,13 @@ export default class PortfolioForm extends Component {
         url: url || '',
         work_type: work_type || '',
 
-        // thumb_image: thumb_image || '',
-        // main_image: main_image || '',
-        // logo: logo || '',
+        thumb_image: thumb_image.url || '',
+        main_image: main_image.url || '',
+        logo: logo.url || '',
 
         apiURL: 'http://localhost:3000/api/portfolio/edit',
         apiAction: 'patch',
+        editMode: true,
 
         requestHeaders: { 
           'Authorization' : localStorage.getItem('token'),
@@ -93,21 +104,6 @@ export default class PortfolioForm extends Component {
         logo: file
       })
     };
-  }
-
-  componentConfig() {
-    return {
-      iconFiletypes: ['.jpg','.png'],
-      showFiletypeIcon: true,
-      postUrl: 'https://httpbin.org/post'
-    }
-  }
-
-  djsConfig() {
-    return {
-      addRemoveLinks: true,
-      maxFiles: 1
-    }
   }
 
   buildForm() {
@@ -182,7 +178,6 @@ export default class PortfolioForm extends Component {
     event.preventDefault();
   }
 
-
   render() {
     return (
       <form onSubmit={this.handleSubmit} className='portfolio-form-wrapper'>
@@ -233,30 +228,33 @@ export default class PortfolioForm extends Component {
           />
         </div>
       <div className='image-uploaders three-column'>
-        <DropzoneComponent
-          ref={this.thumbRef}
-          config={this.componentConfig()}
-          djsConfig={this.djsConfig()}
-          eventHandlers={this.handleThumbDrop()}
-         >
-           <div className='dz-message'>Thumbnail</div>
-         </DropzoneComponent>
-         <DropzoneComponent
-          ref={this.mainImageRef}
-          config={this.componentConfig()}
-          djsConfig={this.djsConfig()}
-          eventHandlers={this.handleMainImageDrop()}
-         >
-           <div className='dz-message'>Main Image</div>
-         </DropzoneComponent>
-         <DropzoneComponent
-          ref={this.logoRef}
-          config={this.componentConfig()}
-          djsConfig={this.djsConfig()}
-          eventHandlers={this.handleLogoDrop()}
-         >
-           <div className='dz-message'>Logo</div>
-         </DropzoneComponent>
+        <PortfolioFormImages 
+          editMode={this.state.editMode} 
+          image={this.state.thumb_image} 
+          imgString='thumb_image' 
+          label='Thumbnail' 
+          imageRef={this.thumbRef} 
+          handleDrop={this.handleThumbDrop}
+          deleteImage={this.deleteImage}
+        />
+        <PortfolioFormImages 
+          editMode={this.state.editMode} 
+          image={this.state.main_image} 
+          imgString='main_image' 
+          label='Main Image' 
+          imageRef={this.mainImageRef} 
+          handleDrop={this.handleMainImageDrop}
+          deleteImage={this.deleteImage}
+        />
+        <PortfolioFormImages 
+          editMode={this.state.editMode} 
+          image={this.state.logo} 
+          imgString='logo' 
+          label='Logo' 
+          imageRef={this.logoRef} 
+          handleDrop={this.handleLogoDrop}
+          deleteImage={this.deleteImage}
+        />
       </div>
       <div>
         <button className='btn' type='submit'>Save</button>

@@ -6,4 +6,40 @@
 
   @include input-element();
 
+  .image-uploaders {
+    @include base-grid();
+    /*grid-template-columns: 200px 200px 200px;*/
+    .portfolio-manager-image-wrapper{
+      position: relative;
+      img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+
+      .image-remove-link {
+        position: absolute;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+
+        h6 {
+          transition: 1s;
+          font-weight: 900;
+          color: transparent;
+        }
+      }
+
+      .image-remove-link:hover h6 {
+        color: $warning;
+      }
+    }
+  }
+
 }
