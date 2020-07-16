@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import PortfolioFormImages from './portfolio-form-images';
-import DropzoneComponent from 'react-dropzone-component';
 
 import '../../../node_modules/react-dropzone-component/styles/filepicker.css';
 import '../../../node_modules/dropzone/dist/min/dropzone.min.css';
@@ -64,9 +63,9 @@ export default class PortfolioForm extends Component {
         url: url || '',
         work_type: work_type || '',
 
-        thumb_image: thumb_image.url || '',
-        main_image: main_image.url || '',
-        logo: logo.url || '',
+        thumb_image_url: thumb_image.url || '',
+        main_image_url: main_image.url || '',
+        logo_url: logo.url || '',
 
         apiURL: 'http://localhost:3000/api/portfolio/edit',
         apiAction: 'patch',
@@ -230,7 +229,7 @@ export default class PortfolioForm extends Component {
       <div className='image-uploaders three-column'>
         <PortfolioFormImages 
           editMode={this.state.editMode} 
-          image={this.state.thumb_image} 
+          image={this.state.editMode ? this.state.thumb_image_url : this.state.thumb_image} 
           imgString='thumb_image' 
           label='Thumbnail' 
           imageRef={this.thumbRef} 
@@ -239,7 +238,7 @@ export default class PortfolioForm extends Component {
         />
         <PortfolioFormImages 
           editMode={this.state.editMode} 
-          image={this.state.main_image} 
+          image={this.state.editMode ? this.state.main_image_url : this.state.main_image} 
           imgString='main_image' 
           label='Main Image' 
           imageRef={this.mainImageRef} 
@@ -248,7 +247,7 @@ export default class PortfolioForm extends Component {
         />
         <PortfolioFormImages 
           editMode={this.state.editMode} 
-          image={this.state.logo} 
+          image={this.state.editMode ? this.state.logo_url : this.state.logo} 
           imgString='logo' 
           label='Logo' 
           imageRef={this.logoRef} 

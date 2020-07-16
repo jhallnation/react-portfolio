@@ -46,7 +46,8 @@ export default class PortfolioManager extends Component {
   clearItemToEdit() {
     this.setState({
       itemToEdit: {}
-    });    
+    }); 
+
   }
 
   handleDeleteItem(id){
