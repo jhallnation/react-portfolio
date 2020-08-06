@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import DropzoneComponent from 'react-dropzone-component';
 
 import PortfolioFormImages from './portfolio-form-images';
 
@@ -46,8 +47,26 @@ export default class PortfolioForm extends Component {
   }
 
   deleteImage(imageType) {
-    console.log('image removed');
-    console.log(imageType);
+    this.state.requestHeaders['imageToDelete'] = imageType;
+
+    axios.delete(
+      'http://localhost:3000/api/portfolio/delete-image',
+      { 
+        headers: this.state.requestHeaders
+      }
+    ).then(response => {
+      if (response.data.delete_portfolio_image == false) {
+         console.error('Unable to delete image');
+       } else {
+         this.setState({
+           [`${imageType}_url`]: ''
+         });
+
+         this.props.getPortfolioItems();
+       }
+    }).catch(error => {
+      console.error('delete image error', error);
+    })
   }
 
   componentDidUpdate() {
@@ -141,7 +160,7 @@ export default class PortfolioForm extends Component {
       headers: this.state.requestHeaders
     })
     .then(response => {
-       if (response.data.new_portfolio == false) {
+       if (response.data.new_edit_portfolio == false) {
          console.error('Unable to create/edit portfolio item');
        } else {
          this.props.getPortfolioItems();
@@ -156,6 +175,10 @@ export default class PortfolioForm extends Component {
             logo: '',
             url: '',
 
+            thumb_image_url: '',
+            main_image_url: '',
+            logo_url: '',
+
             apiURL: 'http://localhost:3000/api/portfolio/new',
             apiAction: 'post',
 
@@ -166,7 +189,9 @@ export default class PortfolioForm extends Component {
           });
 
          [this.thumbRef,this.mainImageRef,this.logoRef].forEach(ref => {
-           ref.current.dropzone.removeAllFiles();
+           if (ref.current != null) {
+             ref.current.dropzone.removeAllFiles();
+           }
          });
 
        }
@@ -232,27 +257,27 @@ export default class PortfolioForm extends Component {
           image={this.state.editMode ? this.state.thumb_image_url : this.state.thumb_image} 
           imgString='thumb_image' 
           label='Thumbnail' 
-          imageRef={this.thumbRef} 
           handleDrop={this.handleThumbDrop}
           deleteImage={this.deleteImage}
+          imageRef={this.thumbRef} 
         />
         <PortfolioFormImages 
           editMode={this.state.editMode} 
           image={this.state.editMode ? this.state.main_image_url : this.state.main_image} 
           imgString='main_image' 
           label='Main Image' 
-          imageRef={this.mainImageRef} 
           handleDrop={this.handleMainImageDrop}
           deleteImage={this.deleteImage}
+          imageRef={this.mainImageRef} 
         />
         <PortfolioFormImages 
           editMode={this.state.editMode} 
           image={this.state.editMode ? this.state.logo_url : this.state.logo} 
           imgString='logo' 
           label='Logo' 
-          imageRef={this.logoRef} 
           handleDrop={this.handleLogoDrop}
           deleteImage={this.deleteImage}
+          imageRef={this.logoRef} 
         />
       </div>
       <div>

@@ -38,15 +38,15 @@ export default class PorfolioFormImages extends Component {
   }
 
   render(){
-    const { editMode, image, imgString, label, imageRef } = this.props;
-    return (
-      <div>
-        {image && editMode ? (
-          <div 
+    const { editMode, image, imgString, label, handleDrop, deleteImage, imageRef } = this.props;
+
+    if (image && editMode) {
+      return (
+        <div 
             className='portfolio-manager-image-wrapper'
             onMouseEnter={() => this.handleMouseEnter()}
             onMouseLeave={() => this.handleMouseLeave()}
-            onClick={() => this.props.deleteImage(imgString)}
+            onClick={() => deleteImage(imgString)}
             >
             <img className={this.state.imageClass} src={image} />
             <div className='image-remove-link'>
@@ -54,17 +54,18 @@ export default class PorfolioFormImages extends Component {
               <h6>Remove {label}</h6>
             </div>
           </div>
-        ) : (
+      )
+    } else {
+      return (
         <DropzoneComponent
           ref={imageRef}
           config={this.componentConfig()}
           djsConfig={this.djsConfig()}
-          eventHandlers={this.props.handleDrop()}
-         >
-           <div className='dz-message'>{label}</div>
-         </DropzoneComponent>
-        )}
-      </div>
-    )
+          eventHandlers={handleDrop()}
+        >
+          <div className='dz-message'>{label}</div>
+        </DropzoneComponent>
+      )
+    }
   }
 }

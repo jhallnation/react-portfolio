@@ -1,13 +1,45 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
+import axios from 'axios';
 
-export default function() {
-  return (
-    <div>
-      <div>Blog</div>
+import BlogItem from '../blog/blog-item';
+
+export default class Blog extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      blogItems: []
+    }
+
+    this.getBlogItems = this.getBlogItems.bind(this);
+  }
+
+  getBlogItems() {
+    axios
+      .get('http://localhost:3000/api/blog')
+      .then(response => {
+        this.setState({
+          blogItems: response.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  componentWillMount() {
+    this.getBlogItems();
+  }
+
+  render() {
+    const blogItems = this.state.blogItems.map(blogItem => {
+      return <BlogItem key={blogItem.id} blogItem={blogItem} />;
+    });
+
+    return (
       <div>
-        <Link to='/about-me'>Read more about me</Link>
+        {blogItems}
       </div>
-    </div>
-  )
+    );
+  }
 }
