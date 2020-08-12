@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import BlogItem from '../blog/blog-item';
+import BlogModal from '../modals/blog-modal';
 
 export default class Blog extends Component {
   constructor() {
@@ -12,11 +13,14 @@ export default class Blog extends Component {
       blogItems: [],
       totalCount: 0,
       currentPage: 0,
-      isLoading: true
+      isLoading: true,
+      modalStatus: false
     }
 
     this.getBlogItems = this.getBlogItems.bind(this);
     this.onScroll = this.onScroll.bind(this);
+    this.createNewBlogLink = this.createNewBlogLink.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
 
     window.addEventListener('scroll', this.onScroll, false);
   }
@@ -39,7 +43,6 @@ export default class Blog extends Component {
           totalCount: response.data.meta.total_blogs,
           isLoading: false
         });
-        console.log(response);
       })
       .catch(error => {
         console.error(error);
@@ -47,6 +50,18 @@ export default class Blog extends Component {
           isLoading: false
         })
       });
+  }
+
+  createNewBlogLink() {
+    this.setState({
+      modalStatus: true
+    });
+  }
+
+  handleModalClose() {
+    this.setState({
+      modalStatus: false
+    });
   }
 
   componentWillMount() {
@@ -64,6 +79,13 @@ export default class Blog extends Component {
 
     return (
       <div className='blog-container'>
+        <BlogModal modalStatus={this.state.modalStatus} handleModalClose={this.handleModalClose}/>
+
+        <div className='new-blog-link'>
+          <a onClick={this.createNewBlogLink}>
+            Create New Blog
+          </a>
+        </div>
         <div className='blog-wrapper'>
           <div className='blog-content'>
             {blogItems}
