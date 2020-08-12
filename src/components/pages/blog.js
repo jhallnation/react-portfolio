@@ -16,15 +16,15 @@ export default class Blog extends Component {
     }
 
     this.getBlogItems = this.getBlogItems.bind(this);
-    this.activateInfiniteScroll();
+    this.onScroll = this.onScroll.bind(this);
+
+    window.addEventListener('scroll', this.onScroll, false);
   }
 
-  activateInfiniteScroll() {
-    window.onscroll = () => {
-      if (this.state.totalCount != this.state.blogItems.length) {
-        if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-          this.getBlogItems();
-        }
+  onScroll() {
+    if (this.state.totalCount != this.state.blogItems.length) {
+      if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+        this.getBlogItems();
       }
     }
   }
@@ -51,6 +51,10 @@ export default class Blog extends Component {
 
   componentWillMount() {
     this.getBlogItems();
+  }
+
+  componentWillUnmount(){
+    window.removeEventListener('scroll', this.onScroll, false);
   }
 
   render() {
