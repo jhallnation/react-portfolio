@@ -8,7 +8,7 @@ const BlogItem = props => {
     <Link to={`/blog-post/${id}`} >
       <div>
         <h1>{title}</h1>
-        <div>{body}</div>
+        <h3>{body}</h3>
       </div>
     </Link>
   );

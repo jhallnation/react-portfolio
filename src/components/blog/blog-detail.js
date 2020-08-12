@@ -36,11 +36,20 @@ export default class BlogDetail extends Component {
   }
 
   render(){
-    const { title, body } = this.state.blogPost
+    const { title, body, main_image, status } = this.state.blogPost
     return (
-      <div>
-        <h2>{title}</h2>
-        <div>{body}</div>
+      <div className='blog-container'>
+        <div className='blog-wrapper'>
+          <div className='blog-content'>
+            <h1>{title}</h1>
+            <div className='blog-main-image'>
+              <img src={main_image} />
+            </div>
+            <div className='blog-body'>
+              <div>{body}</div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
