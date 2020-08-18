@@ -21,8 +21,20 @@ export default class Blog extends Component {
     this.onScroll = this.onScroll.bind(this);
     this.createNewBlogLink = this.createNewBlogLink.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleSuccessfulNewBlogCreation = this.handleSuccessfulNewBlogCreation.bind(this);
 
     window.addEventListener('scroll', this.onScroll, false);
+  }
+
+  handleSuccessfulNewBlogCreation(blog) {
+    this.setState({
+      blogItems: [],
+      totalCount: 0,
+      currentPage: 0,
+      isLoading: true,
+      modalStatus: false
+    });
+    this.getBlogItems();
   }
 
   onScroll() {
@@ -45,7 +57,7 @@ export default class Blog extends Component {
         });
       })
       .catch(error => {
-        console.error(error);
+        console.error('getBlogItems', error);
         this.setState({
           isLoading: false
         })
@@ -79,7 +91,11 @@ export default class Blog extends Component {
 
     return (
       <div className='blog-container'>
-        <BlogModal modalStatus={this.state.modalStatus} handleModalClose={this.handleModalClose}/>
+        <BlogModal 
+          modalStatus={this.state.modalStatus} 
+          handleModalClose={this.handleModalClose} 
+          handleSuccessfulNewBlogCreation={this.handleSuccessfulNewBlogCreation}
+        />
 
         <div className='new-blog-link'>
           <a onClick={this.createNewBlogLink}>
