@@ -37,9 +37,10 @@
       border-bottom: 1px solid $secondaryColorDark;
     }
   }
-      ::placeholder {
-      color: $offwhite;
-    }
+  
+  ::placeholder {
+    color: $offwhite;
+  }
 }
 
 @mixin base-grid() {

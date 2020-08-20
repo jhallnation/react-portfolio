@@ -97,11 +97,14 @@ export default class Blog extends Component {
           handleSuccessfulNewBlogCreation={this.handleSuccessfulNewBlogCreation}
         />
 
-        <div className='new-blog-link'>
-          <a onClick={this.createNewBlogLink}>
-            Create New Blog
-          </a>
-        </div>
+        {this.props.loggedInStatus === 'LOGGED_IN' ? (
+          <div className='new-blog-link'>
+            <a onClick={this.createNewBlogLink}>
+              <FontAwesomeIcon icon='plus-square' /> Create New Blog
+            </a>
+          </div>
+          ) : null
+        }
         <div className='blog-wrapper'>
           <div className='blog-content'>
             {blogItems}
@@ -111,7 +114,7 @@ export default class Blog extends Component {
               <FontAwesomeIcon icon='spinner' spin />
             </div>
             ) : null
-        }
+          }
         </div>
       </div>
     );

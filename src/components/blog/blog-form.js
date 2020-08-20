@@ -56,7 +56,7 @@ export default class BlogForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className='blog-form-wrapper'>
         <input 
           onChange={this.handleChange} 
           type='text' 
@@ -81,7 +81,7 @@ export default class BlogForm extends Component {
           value={this.state.body}
         />
 
-        <button>Save</button>
+        <button className='btn'>Save</button>
       </form>
     )
   }
