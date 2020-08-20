@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import RichTextEditor from  '../forms/rich-text-editor';
+
 export default class BlogForm extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +15,11 @@ export default class BlogForm extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleRichTextEditorChange = this.handleRichTextEditorChange.bind(this);
+  }
+
+  handleRichTextEditorChange(body) {
+    this.setState({ body });
   }
 
   buildForm() {
@@ -73,13 +80,9 @@ export default class BlogForm extends Component {
           <option value='published'>Published</option>
         </select>
 
-        <textarea
-          onChange={this.handleChange}
-          type='text'
-          name='body'
-          placeholder='Blog Body'
-          value={this.state.body}
-        />
+        <div className='one-column'>
+          <RichTextEditor handleRichTextEditorChange={this.handleRichTextEditorChange}/>
+        </div>
 
         <button className='btn'>Save</button>
       </form>
