@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import ReactHtmlParser from 'react-html-parser';
 
 export default class BlogDetail extends Component {
   constructor(props) {
@@ -42,11 +43,13 @@ export default class BlogDetail extends Component {
         <div className='blog-wrapper'>
           <div className='blog-content'>
             <h1>{title}</h1>
-            <div className='blog-main-image'>
-              <img src={main_image} />
-            </div>
+            {main_image ? (
+              <div className='blog-main-image'>
+                <img src={main_image} />
+              </div>
+            ) : null }
             <div className='blog-body'>
-              <div>{body}</div>
+              <div>{ReactHtmlParser(body)}</div>
             </div>
           </div>
         </div>

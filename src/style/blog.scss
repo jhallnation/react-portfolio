@@ -33,17 +33,21 @@
           color: $primaryColor;
         }
 
-        h3 {
+        .blog-summary {
           font-size: 1.1em;
           color: $secondaryColor;
         }
 
+        .read-more {
+          color:$primaryColor;
+        }
+
         &:hover {
-          h1 {
+          h1, .read-more {
             color: $primaryColordark;
           }
 
-          h3 {
+          .blog-summary {
             color: $secondaryColorDark;
           }
 
