@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import ReactHtmlParser from 'react-html-parser';
+import BlogMainImage from './blog-main-image';
 
 export default class BlogDetail extends Component {
   constructor(props) {
@@ -8,10 +9,10 @@ export default class BlogDetail extends Component {
 
     this.state = {
       blogPostID: this.props.match.params.slug,
-      blogPost: {}
+      blogPost: {},
+      main_image_url: ''
     }
 
-    this.getBlogPost = this.getBlogPost.bind(this);
   }
 
   getBlogPost() {
@@ -24,7 +25,8 @@ export default class BlogDetail extends Component {
         })
       .then(response => {
         this.setState({
-          blogPost: response.data
+          blogPost: response.data,
+          main_image_url: response.data.main_image.url
         });
       })
       .catch(error => {
@@ -32,22 +34,18 @@ export default class BlogDetail extends Component {
     });
   }
 
-  componentWillMount(){
+  componentDidMount(){
     this.getBlogPost();
   }
 
   render(){
-    const { title, body, main_image, status } = this.state.blogPost
+    const { title, body, main_image, status } = this.state.blogPost;
     return (
       <div className='blog-container'>
         <div className='blog-wrapper'>
           <div className='blog-content'>
             <h1>{title}</h1>
-            {main_image ? (
-              <div className='blog-main-image'>
-                <img src={main_image} />
-              </div>
-            ) : null }
+              <BlogMainImage main_image={this.state.main_image_url} />
             <div className='blog-body'>
               <div>{ReactHtmlParser(body)}</div>
             </div>

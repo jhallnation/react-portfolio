@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import DropzoneComponent from 'react-dropzone-component';
 
 import RichTextEditor from  '../forms/rich-text-editor';
 
@@ -10,12 +11,39 @@ export default class BlogForm extends Component {
     this.state = {
       title: '',
       body: '',
-      status: 'draft'
+      status: 'draft',
+      main_image: ''
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRichTextEditorChange = this.handleRichTextEditorChange.bind(this);
+    this.componentConfig = this.componentConfig.bind(this);
+    this.djsConfig = this.djsConfig.bind(this);
+    this.handleMainImageDrop = this.handleMainImageDrop.bind(this);
+  }
+
+  componentConfig() {
+    return {
+      iconFiletypes: ['.jpg','.png'],
+      showFiletypeIcon: true,
+      postUrl: 'https://httpbin.org/post'
+    }
+  }
+
+  djsConfig() {
+    return {
+      addRemoveLinks: true,
+      maxFiles: 1
+    }
+  }
+
+  handleMainImageDrop() {
+    return {
+      addedfile: file => this.setState({
+        main_image: file
+      })
+    };
   }
 
   handleRichTextEditorChange(body) {
@@ -28,6 +56,10 @@ export default class BlogForm extends Component {
     formData.append('blog[title]', this.state.title);
     formData.append('blog[body]', this.state.body);
     formData.append('blog[status]', this.state.status);
+
+    if (this.state.main_image) {
+      formData.append('blog[main_image]', this.state.main_image);
+    }
 
     return formData;
   }
@@ -79,6 +111,16 @@ export default class BlogForm extends Component {
           <option value='draft'>Draft</option>
           <option value='published'>Published</option>
         </select>
+
+        <div className='image-uploaders'>
+        <DropzoneComponent
+            config={this.componentConfig()}
+            djsConfig={this.djsConfig()}
+            eventHandlers={this.handleMainImageDrop()}
+          >
+            <div className='dz-message'>Main Image</div>
+          </DropzoneComponent>
+        </div>
 
         <div className='one-column'>
           <RichTextEditor handleRichTextEditorChange={this.handleRichTextEditorChange}/>
