@@ -40,9 +40,11 @@ export default class BlogModal extends Component {
        >
         <div>
           <BlogForm handleFormSubmission={this.handleFormSubmission}/>
-          <a onClick={this.props.handleModalClose}>
-            Cancel
-          </a>
+          <div className='close-blog-form'>
+            <a onClick={this.props.handleModalClose}>
+              Cancel
+            </a>
+          </div>
         </div>
       </ReactModal>
       )

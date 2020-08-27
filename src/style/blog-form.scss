@@ -17,4 +17,23 @@
   ::placeholder {
     color: $primaryColor;
   }
+
+  .remove-blog-image-from-form {
+    @include base-btn()
+    background-color: $warning;
+    color: $offwhite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:active, &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      background-color: $offwhite;
+      color: $warning;
+      border: 1px solid $warning;
+    }
+  }
 }

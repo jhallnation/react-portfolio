@@ -21,6 +21,15 @@ export default class BlogForm extends Component {
     this.componentConfig = this.componentConfig.bind(this);
     this.djsConfig = this.djsConfig.bind(this);
     this.handleMainImageDrop = this.handleMainImageDrop.bind(this);
+
+    this.mainImageRef = React.createRef();
+
+    this.removeMainImageFromForm = this.removeMainImageFromForm.bind(this);
+  }
+
+  removeMainImageFromForm(){
+    this.mainImageRef.current.dropzone.removeAllFiles();
+    this.setState({ main_image: ''});
   }
 
   componentConfig() {
@@ -33,7 +42,7 @@ export default class BlogForm extends Component {
 
   djsConfig() {
     return {
-      addRemoveLinks: true,
+      // addRemoveLinks: true,
       maxFiles: 1
     }
   }
@@ -117,10 +126,19 @@ export default class BlogForm extends Component {
             config={this.componentConfig()}
             djsConfig={this.djsConfig()}
             eventHandlers={this.handleMainImageDrop()}
+            ref={this.mainImageRef}
           >
             <div className='dz-message'>Main Image</div>
           </DropzoneComponent>
         </div>
+
+        {this.state.main_image ? (
+          <div className='remove-blog-image-from-form'>
+            <a onClick={this.removeMainImageFromForm}>
+              Remove Image
+            </a>
+          </div>
+        ) : null }
 
         <div className='one-column'>
           <RichTextEditor handleRichTextEditorChange={this.handleRichTextEditorChange}/>
