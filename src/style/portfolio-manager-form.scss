@@ -31,15 +31,12 @@
         color:transparent;
         transition: 1s;
         font-size: 30px;
-        background-color:rgb(74,74,74);
-        opacity:0;
+        text-align: center;
 
       }
 
       .image-remove-link:hover {
         color: $warning;
-        background-color:rgb(74,74,74);
-        opacity:.5;
       }
     }
   }
