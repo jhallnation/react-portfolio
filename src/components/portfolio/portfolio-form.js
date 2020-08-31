@@ -3,6 +3,7 @@ import axios from 'axios';
 import DropzoneComponent from 'react-dropzone-component';
 
 import PortfolioFormImages from './portfolio-form-images';
+import PortfolioClearImage from './portfolio-clear-image';
 
 import '../../../node_modules/react-dropzone-component/styles/filepicker.css';
 import '../../../node_modules/dropzone/dist/min/dropzone.min.css';
@@ -34,6 +35,8 @@ export default class PortfolioForm extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.clearForm = this.clearForm.bind(this);
+    this.removeImageFromForm = this.removeImageFromForm.bind(this);
 
     this.handleThumbDrop = this.handleThumbDrop.bind(this);
     this.handleMainImageDrop = this.handleMainImageDrop.bind(this);
@@ -44,6 +47,54 @@ export default class PortfolioForm extends Component {
     this.thumbRef = React.createRef();
     this.mainImageRef = React.createRef();
     this.logoRef = React.createRef();
+  }
+
+  removeImageFromForm(image) {
+    switch (image) {
+      case 'Thumb Image':
+        this.setState({ thumb_image: '' });
+        this.thumbRef.current.dropzone.removeAllFiles();
+        break;
+      case 'Main Image':
+      this.setState({ main_image: '' });
+        this.mainImageRef.current.dropzone.removeAllFiles();
+        break;
+      case 'Logo':
+        this.setState({ logo: '' });
+        this.logoRef.current.dropzone.removeAllFiles();
+        break;
+      default:
+        console.error(image, 'removeImageFromForm invalid input');
+    }
+  }
+
+  clearForm(){
+    this.setState({
+      title: '',
+      subtitle: '',
+      body: '',
+      work_type: 'Home Project',
+      main_image: '',
+      thumb_image: '',
+      logo: '',
+      url: '',
+
+      apiURL: 'http://localhost:3000/api/portfolio/new',
+      apiAction: 'post',
+      editMode: false,
+
+      requestHeaders: { 
+        'Authorization' : localStorage.getItem('token'),
+        'jhUserEmail' : localStorage.getItem('userEmail'),
+      },
+
+    });
+
+    [this.thumbRef,this.mainImageRef,this.logoRef].forEach(ref => {
+      if (ref.current != null) {
+        ref.current.dropzone.removeAllFiles();
+      }
+    });
   }
 
   deleteImage(imageType) {
@@ -165,34 +216,7 @@ export default class PortfolioForm extends Component {
        } else {
          this.props.getPortfolioItems();
 
-         this.setState({
-            title: '',
-            subtitle: '',
-            body: '',
-            work_type: 'Home Project',
-            main_image: '',
-            thumb_image: '',
-            logo: '',
-            url: '',
-
-            thumb_image_url: '',
-            main_image_url: '',
-            logo_url: '',
-
-            apiURL: 'http://localhost:3000/api/portfolio/new',
-            apiAction: 'post',
-
-            requestHeaders: { 
-              'Authorization' : localStorage.getItem('token'),
-              'jhUserEmail' : localStorage.getItem('userEmail'),
-            }
-          });
-
-         [this.thumbRef,this.mainImageRef,this.logoRef].forEach(ref => {
-           if (ref.current != null) {
-             ref.current.dropzone.removeAllFiles();
-           }
-         });
+         this.clearForm();
 
        }
      }).catch(error =>{
@@ -280,8 +304,20 @@ export default class PortfolioForm extends Component {
           imageRef={this.logoRef} 
         />
       </div>
-      <div>
+      <div className='image-button-container'>
+        {this.state.thumb_image ? (
+          <PortfolioClearImage removeImageFromForm={this.removeImageFromForm} image={'Thumb Image'} />
+        ) : <div></div> }
+        {this.state.main_image ? (
+          <PortfolioClearImage removeImageFromForm={this.removeImageFromForm} image={'Main Image'} />
+        ) : <div></div>  }
+        {this.state.logo ? (
+          <PortfolioClearImage removeImageFromForm={this.removeImageFromForm} image={'Logo'} />
+        ) : <div></div>  }
+      </div>
+      <div className='form-button-container '>
         <button className='btn' type='submit'>Save</button>
+        <a className='portfolio-warning-btn' onClick={this.clearForm}>Clear Form</a>
       </div>
       </form>
     );

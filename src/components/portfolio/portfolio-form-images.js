@@ -32,7 +32,6 @@ export default class PorfolioFormImages extends Component {
 
   djsConfig() {
     return {
-      addRemoveLinks: true,
       maxFiles: 1
     }
   }
@@ -51,7 +50,7 @@ export default class PorfolioFormImages extends Component {
             <img className={this.state.imageClass} src={image} />
             <div className='image-remove-link'>
               <FontAwesomeIcon icon='times' />
-              <h6>Remove {label}</h6>
+              Remove {label}
             </div>
           </div>
       )
