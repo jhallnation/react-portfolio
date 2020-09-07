@@ -3,16 +3,26 @@ import axios from 'axios';
 import DropzoneComponent from 'react-dropzone-component';
 
 import RichTextEditor from  '../forms/rich-text-editor';
+import FormImagesHelper from '../../helpers/form-images-helper';
 
 export default class BlogForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      id: '',
       title: '',
       body: '',
       status: 'draft',
-      main_image: ''
+      main_image: '',
+
+      apiURL: 'http://localhost:3000/api/blog/new',
+      apiAction: 'post',
+
+      requestHeaders: { 
+        'Authorization' : localStorage.getItem('token'),
+        'jhUserEmail' : localStorage.getItem('userEmail'),
+      },
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -21,10 +31,62 @@ export default class BlogForm extends Component {
     this.componentConfig = this.componentConfig.bind(this);
     this.djsConfig = this.djsConfig.bind(this);
     this.handleMainImageDrop = this.handleMainImageDrop.bind(this);
+    this.deleteImage = this.deleteImage.bind(this);
+    this.removeMainImageFromForm = this.removeMainImageFromForm.bind(this);
 
     this.mainImageRef = React.createRef();
 
-    this.removeMainImageFromForm = this.removeMainImageFromForm.bind(this);
+  }
+
+   deleteImage(imageType) {
+    this.state.requestHeaders['imageToDelete'] = imageType;
+
+    axios.delete(
+      'http://localhost:3000/api/blog/delete-image',
+      { 
+        headers: this.state.requestHeaders
+      }
+    ).then(response => {
+      if (response.data.delete_blog_image == false) {
+         console.error('Unable to delete image');
+       } else {
+         this.setState({
+           [`${imageType}`]: ''
+         });
+
+         this.props.handleMainImageDeletion();
+       }
+    }).catch(error => {
+      console.error('delete image error', error);
+    })
+  }
+
+  handleMouseEnter(){
+    this.setState({imageClass: 'image-blur'});
+  }
+
+  handleMouseLeave(){
+    this.setState({imageClass: ''});
+  }
+
+  componentWillMount() {
+    if (this.props.editMode) {
+      this.setState({
+        id: this.props.blog.id,
+        title: this.props.blog.title,
+        body: this.props.blog.body,
+        status: this.props.blog.status,
+
+        apiURL: 'http://localhost:3000/api/blog/edit',
+        apiAction: 'patch',
+
+        requestHeaders: { 
+          'Authorization' : localStorage.getItem('token'),
+          'jhUserEmail' : localStorage.getItem('userEmail'),
+          'blogPostID' : this.props.blog.id
+        }
+      });
+    }
   }
 
   removeMainImageFromForm(){
@@ -80,20 +142,22 @@ export default class BlogForm extends Component {
   }
 
   handleSubmit(event) {
-    axios.post(
-      'http://localhost:3000/api/blog/new',
-      this.buildForm(),
-      { 
-        headers: { 
-          'Authorization' : localStorage.getItem('token'),
-          'jhUserEmail' : localStorage.getItem('userEmail')
-        }
-      }
-    ).then(response => {
+    axios({
+      method: this.state.apiAction,
+      url: this.state.apiURL,
+      data: this.buildForm(),
+      headers: this.state.requestHeaders
+    })
+    .then(response => {
       if (response.data.new_edit_blog == false) {
          console.error('Unable to create/edit blog');
        } else {
-        this.props.handleFormSubmission(response.data.blog);
+        if (this.props.editMode) {
+          console.log(response.data.blog)
+          this.props.handleUpdateFormSubmission(response.data.blog);
+        } else {
+          this.props.handleFormSubmission(response.data.blog);
+        }
       }
     }).catch(error => {
       console.error('Blog handleSubmit', error);
@@ -122,14 +186,15 @@ export default class BlogForm extends Component {
         </select>
 
         <div className='image-uploaders'>
-        <DropzoneComponent
-            config={this.componentConfig()}
-            djsConfig={this.djsConfig()}
-            eventHandlers={this.handleMainImageDrop()}
-            ref={this.mainImageRef}
-          >
-            <div className='dz-message'>Main Image</div>
-          </DropzoneComponent>
+            <FormImagesHelper 
+              editMode={this.props.editMode} 
+              image={this.props.blog ? this.props.blog.main_image.url : null} 
+              imgString='main_image' 
+              label='Main Image' 
+              handleDrop={this.handleMainImageDrop}
+              deleteImage={this.deleteImage}
+              imageRef={this.mainImageRef} 
+            />
         </div>
 
         {this.state.main_image ? (
@@ -141,7 +206,11 @@ export default class BlogForm extends Component {
         ) : null }
 
         <div className='one-column'>
-          <RichTextEditor handleRichTextEditorChange={this.handleRichTextEditorChange}/>
+          <RichTextEditor 
+            handleRichTextEditorChange={this.handleRichTextEditorChange}
+            editMode={this.props.editMode}
+            contentToEdit={this.props.editMode && this.props.blog.body ? this.props.blog.body : null}
+          />
         </div>
 
         <button className='btn'>Save</button>

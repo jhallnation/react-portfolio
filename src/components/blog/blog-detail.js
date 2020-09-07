@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ReactHtmlParser from 'react-html-parser';
 import BlogMainImage from './blog-main-image';
+import BlogForm from './blog-form';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default class BlogDetail extends Component {
   constructor(props) {
@@ -10,9 +13,41 @@ export default class BlogDetail extends Component {
     this.state = {
       blogPostID: this.props.match.params.slug,
       blogPost: {},
-      main_image_url: ''
+      main_image_url: '',
+      editMode: false
     }
 
+    this.handleEditClick = this.handleEditClick.bind(this);
+    this.getBlogPost = this.getBlogPost.bind(this);
+    this.handleMainImageDeletion = this.handleMainImageDeletion.bind(this);
+    this.handleUpdateFormSubmission = this.handleUpdateFormSubmission.bind(this);
+    this.handleCloseForm = this.handleCloseForm.bind(this);
+  }
+
+  handleCloseForm() {
+    this.setState({
+      editMode: false
+    })
+  }
+
+  handleUpdateFormSubmission(blog) {
+    this.setState({
+      blogPost: blog,
+      main_image_url: blog.main_image.url,
+      editMode: false
+    })
+  }
+
+  handleMainImageDeletion() {
+    this.setState({
+      blogPost: {
+        main_image: ''
+      }
+    })
+  }
+
+  handleEditClick() {
+    this.setState({ editMode: true });
   }
 
   getBlogPost() {
@@ -40,16 +75,44 @@ export default class BlogDetail extends Component {
 
   render(){
     const { title, body, main_image, status } = this.state.blogPost;
-    return (
-      <div className='blog-container'>
-        <div className='blog-wrapper'>
+
+    const contentManager = () => {
+      if (this.state.editMode) {
+        return <div>
+                <BlogForm 
+                  editMode={this.state.editMode} 
+                  blog={this.state.blogPost} 
+                  handleMainImageDeletion={this.handleMainImageDeletion}
+                  handleUpdateFormSubmission={this.handleUpdateFormSubmission}
+                />
+                <div className='close-blog-form'>
+                  <a onClick={this.handleCloseForm}>
+                    Cancel
+                  </a>
+                </div>
+              </div>
+      } else { 
+        return (         
           <div className='blog-content'>
-            <h1>{title}</h1>
+            <div>
+              <h1>{title}</h1>
+              <a className='action-icon edit-item' onClick={this.handleEditClick}>
+                <FontAwesomeIcon icon='edit' />
+              </a>
+            </div>
               <BlogMainImage main_image={this.state.main_image_url} />
             <div className='blog-body'>
               <div>{ReactHtmlParser(body)}</div>
             </div>
           </div>
+        );
+      }
+    }
+
+    return (
+      <div className='blog-container'>
+        <div className='blog-wrapper'>
+          {contentManager()} 
         </div>
       </div>
     );

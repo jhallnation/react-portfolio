@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DropzoneComponent from 'react-dropzone-component';
 
-import PortfolioFormImages from './portfolio-form-images';
+import FormImagesHelper from '../../helpers/form-images-helper';
 import PortfolioClearImage from './portfolio-clear-image';
 
 import '../../../node_modules/react-dropzone-component/styles/filepicker.css';
@@ -276,7 +276,7 @@ export default class PortfolioForm extends Component {
           />
         </div>
       <div className='image-uploaders three-column'>
-        <PortfolioFormImages 
+        <FormImagesHelper 
           editMode={this.state.editMode} 
           image={this.state.editMode ? this.state.thumb_image_url : this.state.thumb_image} 
           imgString='thumb_image' 
@@ -285,7 +285,7 @@ export default class PortfolioForm extends Component {
           deleteImage={this.deleteImage}
           imageRef={this.thumbRef} 
         />
-        <PortfolioFormImages 
+        <FormImagesHelper 
           editMode={this.state.editMode} 
           image={this.state.editMode ? this.state.main_image_url : this.state.main_image} 
           imgString='main_image' 
@@ -294,7 +294,7 @@ export default class PortfolioForm extends Component {
           deleteImage={this.deleteImage}
           imageRef={this.mainImageRef} 
         />
-        <PortfolioFormImages 
+        <FormImagesHelper 
           editMode={this.state.editMode} 
           image={this.state.editMode ? this.state.logo_url : this.state.logo} 
           imgString='logo' 

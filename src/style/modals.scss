@@ -3,28 +3,6 @@
   height: 80%;
 
   .close-blog-form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    a {
-      @include base-btn()
-      background-color: $warning;
-      color: $offwhite;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width:90%;
-
-      &:active, &:focus {
-        outline: none;
-      }
-
-      &:hover {
-        background-color: $offwhite;
-        color: $warning;
-        border: 1px solid $warning;
-      }
-    }
+    @include cancel-btn()
   }
 }

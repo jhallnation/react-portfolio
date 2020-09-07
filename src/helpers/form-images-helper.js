@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import DropzoneComponent from 'react-dropzone-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default class PorfolioFormImages extends Component {
+export default class FormImagesHelper extends Component {
   constructor(props){
     super(props);
 
@@ -42,17 +42,17 @@ export default class PorfolioFormImages extends Component {
     if (image && editMode) {
       return (
         <div 
-            className='portfolio-manager-image-wrapper'
-            onMouseEnter={() => this.handleMouseEnter()}
-            onMouseLeave={() => this.handleMouseLeave()}
-            onClick={() => deleteImage(imgString)}
-            >
-            <img className={this.state.imageClass} src={image} />
-            <div className='image-remove-link'>
-              <FontAwesomeIcon icon='times' />
-              Remove {label}
-            </div>
+          className='image-wrapper'
+          onMouseEnter={() => this.handleMouseEnter()}
+          onMouseLeave={() => this.handleMouseLeave()}
+          onClick={() => deleteImage(imgString)}
+          >
+          <img className={this.state.imageClass} src={image} />
+          <div className='image-remove-link'>
+            <FontAwesomeIcon icon='times' />
+            Remove {label}
           </div>
+        </div>
       )
     } else {
       return (
