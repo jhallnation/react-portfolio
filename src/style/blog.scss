@@ -67,6 +67,24 @@
         }
 
       }
+
+      .blog-detail-title-container {
+        display: flex;
+        align-items: center;
+        .edit-item { 
+          display: flex;
+          color: $primaryColor;
+          cursor: pointer;
+          transition: 0.5s ease-in-out;
+          margin-left: 10px;
+          margin-bottom: -5px;
+
+
+          &:hover {
+            color: $secondaryColor;
+          }
+        }
+      }
     }
   }
 

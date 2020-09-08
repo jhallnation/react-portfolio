@@ -1,0 +1,32 @@
+.about-me-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: calc(100vh - 83px);
+
+  .left-column {
+    background-size: cover;
+    background-position: center;
+  }
+
+  .right-column {
+    display: flex;
+    flex-direction: column;
+    padding:25px;
+    background-color: $offwhite;
+    color:$secondaryColor;
+
+    h1 {
+      text-align: center;
+      padding-bottom:45px;
+    }
+
+    .about-me-info {
+      display: flex;
+      flex-direction: column;
+      justify-content:center;
+      height:100%;
+      padding-left:40px;
+      padding-right:40px;
+    }
+  }
+}

@@ -77,7 +77,7 @@ export default class BlogDetail extends Component {
     const { title, body, main_image, status } = this.state.blogPost;
 
     const contentManager = () => {
-      if (this.state.editMode) {
+      if (this.state.editMode && this.props.loggedInStatus === 'LOGGED_IN') {
         return <div>
                 <BlogForm 
                   editMode={this.state.editMode} 
@@ -94,11 +94,13 @@ export default class BlogDetail extends Component {
       } else { 
         return (         
           <div className='blog-content'>
-            <div>
+            <div className='blog-detail-title-container'>
               <h1>{title}</h1>
-              <a className='action-icon edit-item' onClick={this.handleEditClick}>
-                <FontAwesomeIcon icon='edit' />
-              </a>
+              {this.props.loggedInStatus === 'LOGGED_IN' ? (
+                <a className='action-icon edit-item' onClick={this.handleEditClick}>
+                  <FontAwesomeIcon icon='edit' />
+                </a>
+              ) : null }
             </div>
               <BlogMainImage main_image={this.state.main_image_url} />
             <div className='blog-body'>

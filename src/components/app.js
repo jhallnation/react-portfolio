@@ -123,7 +123,15 @@ export default class App extends Component {
                 )} 
               />
 
-              <Route path='/blog-post/:slug' component={ BlogDetail } />  
+              <Route 
+                path='/blog-post/:slug' 
+                render={props => (
+                  <BlogDetail
+                    {...props}
+                    loggedInStatus={this.state.loggedInStatus}
+                   />
+                )} 
+              />  
 
               {/* prevents ability to go directly to page by typing url into the browser, if logged out */}
               {this.state.loggedInStatus === 'LOGGED_IN' ? this.authorizedPages() : null}

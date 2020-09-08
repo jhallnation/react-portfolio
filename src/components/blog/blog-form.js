@@ -149,11 +149,10 @@ export default class BlogForm extends Component {
       headers: this.state.requestHeaders
     })
     .then(response => {
-      if (response.data.new_edit_blog == false) {
+      if (response.data.new_edit_blog != true) {
          console.error('Unable to create/edit blog');
        } else {
-        if (this.props.editMode) {
-          console.log(response.data.blog)
+        if (this.props.editMode) {          
           this.props.handleUpdateFormSubmission(response.data.blog);
         } else {
           this.props.handleFormSubmission(response.data.blog);
