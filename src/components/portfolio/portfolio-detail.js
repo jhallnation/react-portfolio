@@ -36,12 +36,39 @@ export default class PortfolioDetail extends Component {
   }
 
   render() {
-    const { title, subtitle, body, main_image, thumb_image, logo, work_type, url } = this.state.portfolioItem;
+
+    const title = this.state.portfolioItem.title;
+    const subtitle = this.state.portfolioItem.subtitle;
+    const body = this.state.portfolioItem.body;
+    const main_image = this.state.portfolioItem.main_image ? this.state.portfolioItem.main_image.url : null;
+    const thumb_image = this.state.portfolioItem.thumb_image ? this.state.portfolioItem.thumb_image.url : null;
+    const logo = this.state.portfolioItem.logo ? this.state.portfolioItem.logo.url : null;
+    const work_type = this.state.portfolioItem.work_type;
+    const url = this.state.portfolioItem.url;
+
+    const bannerStyles = {
+      backgroundImage: 'url(' + thumb_image + ')',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center center'
+    };
 
     return (
-      <div>
-        <h2>Portfolio Detail for {this.props.match.params.slug}</h2>
-        <h1>{title}</h1>
+      <div className='portfolio-detail-wrapper'>
+        <div className='banner' style={bannerStyles}>
+          <div className='title'>
+            <h1>{title}</h1>
+            <h3>{subtitle}</h3>
+          </div>
+        </div>
+        <div className='portfolio-detail-description-wrapper'>
+          <div className='description'>
+            {body}
+          </div>
+        </div>
+        <div className='bottom-content-wrapper'>
+          <a href={url} className='site-link' target='_blank'>Visit {title}</a>
+        </div>
       </div>
     )
   }
