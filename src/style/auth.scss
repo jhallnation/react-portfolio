@@ -13,5 +13,18 @@
     justify-content: center;
     align-items: center;
     background-color: $primaryColordark;
+
+    .auth-form-wrapper{
+      @include base-grid();
+      grid-template-columns: 1fr;
+      padding: 42px;
+      
+
+      @include input-element();
+
+      .btn{
+        width:100%
+      }
+    }
   }
 }

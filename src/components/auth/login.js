@@ -58,7 +58,7 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div className='auth-form-wrapper'>
         <h1>ADMINISTRATION DASHBOARD LOGIN</h1>
 
         <div>{this.state.errorText}</div>
@@ -82,7 +82,7 @@ export default class Login extends Component {
           />
 
           <div>
-            <button type='submit'>Login</button>
+            <button className='btn' type='submit'>Login</button>
           </div>
 
         </form>

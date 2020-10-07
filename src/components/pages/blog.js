@@ -22,11 +22,36 @@ export default class Blog extends Component {
     this.createNewBlogLink = this.createNewBlogLink.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
     this.handleSuccessfulNewBlogCreation = this.handleSuccessfulNewBlogCreation.bind(this);
+    this.handleDeleteClick = this. handleDeleteClick.bind(this);
+    this.refreshBlogList = this.refreshBlogList.bind(this);
 
     window.addEventListener('scroll', this.onScroll, false);
   }
 
-  handleSuccessfulNewBlogCreation(blog) {
+  handleDeleteClick(id) {
+    axios
+      .delete('http://localhost:3000/api/blog/delete',
+        { 
+          headers: { 
+            'Authorization' : localStorage.getItem('token'),
+            'jhUserEmail' : localStorage.getItem('userEmail'),
+            'blogPostID' : id
+          }
+        }
+      ).then(response => {
+        if (response.data.delete_blog == false) {
+         console.error('Unable to delete blog post');
+        } else {
+          this.refreshBlogList();
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      }
+    );
+  }
+
+  refreshBlogList(){
     this.setState({
       blogItems: [],
       totalCount: 0,
@@ -35,6 +60,10 @@ export default class Blog extends Component {
       modalStatus: false
     });
     this.getBlogItems();
+  }
+
+  handleSuccessfulNewBlogCreation(blog) {
+    this.refreshBlogList();
   }
 
   onScroll() {
@@ -86,7 +115,7 @@ export default class Blog extends Component {
 
   render() {
     const blogItems = this.state.blogItems.map(blogItem => {
-      return <BlogItem key={blogItem.id} blogItem={blogItem} />;
+      return <BlogItem key={blogItem.id} blogItem={blogItem} loggedInStatus={this.props.loggedInStatus} handleDeleteClick={this.handleDeleteClick}/>;
     });
 
     return (
