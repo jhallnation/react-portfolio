@@ -5,7 +5,9 @@ import {
   faEdit, 
   faTimes, 
   faSpinner, 
-  faPlusSquare 
+  faPlusSquare,
+  faEnvelope,
+  faLock 
 } from '@fortawesome/free-solid-svg-icons';
 
 const Icons = () => {
@@ -16,7 +18,9 @@ const Icons = () => {
     faEdit,
     faTimes,
     faSpinner, 
-    faPlusSquare
+    faPlusSquare,
+    faEnvelope,
+    faLock 
   );
 };
 

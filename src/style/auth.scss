@@ -19,6 +19,18 @@
       grid-template-columns: 1fr;
       padding: 42px;
       
+      .input-container {
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+
+        .auth-icon {
+          color:$secondaryColorDark;
+          margin-bottom:15px;
+          margin-right:15px;
+          font-size:1.5em;
+        }
+      }
 
       @include input-element();
 
