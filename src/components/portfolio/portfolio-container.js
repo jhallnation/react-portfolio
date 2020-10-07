@@ -16,13 +16,21 @@ export default class PortfolioContainer extends Component {
     this.handleFilter = this.handleFilter.bind(this);
   }
 
-  getPortfolioItems(){
+  getPortfolioItems(filter = null){
     axios
       .get('http://localhost:3000/api/portfolio')
       .then(response => {
-        this.setState({
-          items: response.data
-        });
+        if (filter) {
+          this.setState({
+            items: response.data.filter(i => {
+              return i.work_type === filter;
+            })
+          });
+        } else {
+          this.setState({
+            items: response.data
+          });
+        }
       })
       .catch(error => {
         console.log(error);
@@ -30,11 +38,11 @@ export default class PortfolioContainer extends Component {
   }
 
   handleFilter(filter){
-     this.setState({
-       items: this.state.items.filter(i => {
-         return i.work_type === filter;
-       })
-     })
+    if (filter === 'CLEAR_FILTERS') {
+      this.getPortfolioItems();
+    } else {
+      this.getPortfolioItems(filter);
+    }
   }
 
   portfolioItems() {
@@ -52,11 +60,12 @@ export default class PortfolioContainer extends Component {
     }
 
     return (
-      <div>
+      <div className='homepage-wrapper'>
         <div className='button-wrapper'>
           <button className='btn' onClick={() => this.handleFilter('Employee')}>Employee</button>
-          <button className='btn' onClick={() => this.handleFilter('Freelance')}>Freelance</button>
-          <button className='btn' onClick={() => this.handleFilter('Home Project')}>Home Project</button>
+          <button className='btn filter-btn' onClick={() => this.handleFilter('Freelance')}>Freelance</button>
+          <button className='btn filter-btn' onClick={() => this.handleFilter('Home Project')}>Home Project</button>
+          <button className='btn filter-btn' onClick={() => this.handleFilter('CLEAR_FILTERS')}>All</button>
         </div>
 
         <div className='portfolio-items-wrapper'>
